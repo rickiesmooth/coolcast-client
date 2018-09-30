@@ -1,0 +1,31 @@
+{
+  "name": "coolcast-client",
+  "description": "A simple Podcast app",
+  "version": "0.1.0",
+  "author": "Rick Smit",
+  "dependencies": {
+    "@glennsl/bs-json": "^3.0.0",
+    "babel-plugin-react-native-web": "^0.9.1",
+    "bs-fetch": "^0.3.0",
+    "bs-platform": "^4.0.2",
+    "bs-react-native": "^0.9.0",
+    "gatsby": "^2.0.12",
+    "gatsby-link-reason": "^1.1.0",
+    "gatsby-plugin-react-helmet": "^2.0.10",
+    "gatsby-plugin-reason": "^1.3.0",
+    "react-art": "^16.5.2",
+    "react-helmet": "^5.2.0",
+    "react-native-web": "^0.9.1",
+    "reason-react": "^0.5.3",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "gatsby build",
+    "dev": "gatsby develop",
+    "format": "prettier --write 'src/**/*.js'"
+  },
+  "devDependencies": {
+    "prettier": "^1.11.1"
+  }
+}
