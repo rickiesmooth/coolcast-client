@@ -30,8 +30,7 @@ var isReasonFile = function isReasonFile(fileName) {
 };
 
 var onCreateWebpackConfig = exports.onCreateWebpackConfig = function onCreateWebpackConfig(_ref) {
-  var stage = _ref.stage,
-      actions = _ref.actions;
+  var actions = _ref.actions;
   var setWebpackConfig = actions.setWebpackConfig;
 
   setWebpackConfig({
@@ -73,34 +72,29 @@ var resolvableExtensions = exports.resolvableExtensions = function resolvableExt
   return ['.ml', '.re'];
 };
 
-var onCreatePage = exports.onCreatePage = function onCreatePage(_ref3, _ref4) {
+var onCreatePage = exports.onCreatePage = function onCreatePage(_ref3) {
   var page = _ref3.page,
-      _ref3$boundActionCrea = _ref3.boundActionCreators,
-      createPage = _ref3$boundActionCrea.createPage,
-      deletePage = _ref3$boundActionCrea.deletePage;
-  var derivePathFromComponentName = _ref4.derivePathFromComponentName;
+      _ref3$actions = _ref3.actions,
+      createPage = _ref3$actions.createPage,
+      deletePage = _ref3$actions.deletePage;
 
-  return new Promise(function (resolve, reject) {
-    var oldPage = Object.assign({}, page);
-    var component = page.component,
-        path = page.path;
+  var oldPage = Object.assign({}, page);
+  var component = page.component,
+      path = page.path;
 
 
-    if (isCompiledFile(component)) {
-      // Remove .bs components so we don't have duplicates
+  if (isCompiledFile(component)) {
+    // Remove .bs components so we don't have duplicates
+    deletePage(oldPage);
+  } else if (isReasonFile(component) && !path.endsWith('.html')) {
+    // Try to grab the name of the component from the ReasonReact
+    // component instead of using the file name
+    var source = _fs2.default.readFileSync(component, 'utf-8');
+    var newPath = (0, _utils.getPathForComponent)(source);
+    if (newPath !== undefined) {
+      var newPage = Object.assign({}, page, { path: newPath });
       deletePage(oldPage);
-    } else if (derivePathFromComponentName && isReasonFile(component) && !path.endsWith('.html')) {
-      // Try to grab the name of the component from the ReasonReact
-      // component instead of using the file name
-      var source = _fs2.default.readFileSync(component, 'utf-8');
-      var newPath = (0, _utils.getPathForComponent)(source);
-      if (newPath !== undefined) {
-        var newPage = Object.assign({}, page, { path: newPath });
-        deletePage(oldPage);
-        createPage(newPage);
-      }
+      createPage(newPage);
     }
-
-    resolve();
-  });
+  }
 };
