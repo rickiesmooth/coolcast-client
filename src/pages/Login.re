@@ -4,14 +4,17 @@ let component = ReasonReact.statelessComponent("login");
 
 let text = ReasonReact.string;
 
+/* <Signup key="eee" /> */
+
 let make = _children => {
   ...component,
   render: _self =>
     <Layout>
-      <GatsbyLink key="e" to_="/">
-        {ReasonReact.string("siteTitle")}
-      </GatsbyLink>
-      <Text key="ḧ" value="Hi Login" />
+      <View>
+        <GatsbyLink key="e" to_="/">
+          {ReasonReact.string("Home")}
+        </GatsbyLink>
+      </View>
     </Layout>,
 };
 

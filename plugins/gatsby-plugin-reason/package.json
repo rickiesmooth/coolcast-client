@@ -27,7 +27,8 @@
     "dependencies": {
         "bs-loader": "^2.0.6",
         "bsb-js": "^1.1.7",
-        "reason-react": "^0.5.3"
+        "reason-react": "^0.5.3",
+        "unfetch": "^4.0.1"
     },
     "peerDependencies": {
         "gatsby": "^1.0.0"
