@@ -1,9 +1,7 @@
 [@bs.module "gatsby"] external gatsbyLink: ReasonReact.reactClass = "Link";
 
-[@bs.module "gatsby"] external navigate: string => unit = "navigate";
-
 [@bs.module "gatsby"] external withPrefix: string => string = "withPrefix";
-
+[@bs.module "gatsby"] external navigate: string => unit = "navigate";
 [@bs.deriving abstract]
 type jsProps = {
   [@bs.as "to"]
@@ -16,21 +14,6 @@ type jsProps = {
   exact: Js.nullable(bool),
   strict: Js.nullable(bool),
 };
-
-/* TODO figure out a type-safe way to filter out undefined properties from props */
-let filterProps: jsProps => jsProps = [%raw
-  {|
-  function(props) {
-    var newProps = {};
-    for(var key in props) {
-      if(props[key] !== undefined) {
-        newProps[key] = props[key];
-      }
-    }
-    return newProps;
-  }
-|}
-];
 
 let make =
     (
@@ -57,7 +40,7 @@ let make =
     );
   ReasonReact.wrapJsForReason(
     ~reactClass=gatsbyLink,
-    ~props=filterProps(jsProps),
+    ~props=jsProps,
     children,
   );
 };
