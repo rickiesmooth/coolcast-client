@@ -32,7 +32,8 @@
     "recompose": "^0.30.0",
     "subscriptions-transport-ws": "^0.9.15",
     "webpack-node-externals": "^1.7.2",
-    "ws": "^6.0.0"
+    "ws": "^6.0.0",
+    "graphql_ppx": "^0.2.7"
   },
   "license": "MIT",
   "scripts": {
@@ -45,7 +46,6 @@
     "graphql": "^0.13.2"
   },
   "devDependencies": {
-    "graphql_ppx": "^0.2.7",
     "prettier": "^1.11.1"
   }
 }
