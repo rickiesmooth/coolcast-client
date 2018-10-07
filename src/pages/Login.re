@@ -1,5 +1,4 @@
 open BsReactNative;
-open Context;
 
 let component = ReasonReact.statelessComponent("login");
 
