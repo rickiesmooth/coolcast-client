@@ -19,7 +19,6 @@ var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-require('unfetch');
 var BS_TEST = /\.(bs.js)$/;
 var REASON_TEST = /\.(ml|re)$/;
 
