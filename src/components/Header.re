@@ -1,4 +1,5 @@
 open BsReactNative;
+open Context;
 
 let component = ReasonReact.statelessComponent("Header");
 
@@ -23,6 +24,9 @@ let make = (~siteTitle: string, _children) => {
     <View style=styles##wrapper>
       <View style=styles##header>
         <Text style=styles##head value=siteTitle />
+        <UserContext.Consumer>
+          ...{text => <Text value=text />}
+        </UserContext.Consumer>
       </View>
     </View>,
 };

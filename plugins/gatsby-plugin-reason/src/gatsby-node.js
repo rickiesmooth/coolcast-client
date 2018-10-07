@@ -3,7 +3,7 @@ import { compileFileSync } from 'bsb-js'
 import fs from 'fs'
 import { getPathForComponent } from './utils'
 import path from 'path'
-
+require('unfetch')
 const BS_TEST = /\.(bs.js)$/
 const REASON_TEST = /\.(ml|re)$/
 

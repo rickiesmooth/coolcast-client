@@ -1,4 +1,5 @@
 open BsReactNative;
+open Context;
 
 let component = ReasonReact.statelessComponent("index");
 
@@ -8,10 +9,11 @@ let make = _children => {
   ...component,
   render: _self =>
     <Layout>
-      <GatsbyLink key="e" to_="/login">
-        {ReasonReact.string("siteTitle")}
-      </GatsbyLink>
-      <Text key="ḧ" value="Hi people" />
+      <View>
+        <GatsbyLink key="e" to_="/login">
+          {ReasonReact.string("siteTitle")}
+        </GatsbyLink>
+      </View>
     </Layout>,
 };
 
