@@ -13,6 +13,7 @@
     "apollo-link-http": "^1.5.5",
     "apollo-link-ws": "^1.0.9",
     "bs-fetch": "^0.3.0",
+    "bs-platform": "^4.0.6",
     "bs-react-native": "^0.9.0",
     "gatsby": "^2.0.12",
     "gatsby-plugin-react-helmet": "^2.0.10",
@@ -41,8 +42,8 @@
     "graphql": "^0.13.2"
   },
   "devDependencies": {
+    "babel-plugin-react-native-web": "^0.9.1",
     "graphql_ppx": "^0.2.7",
-    "prettier": "^1.11.1",
-    "babel-plugin-react-native-web": "^0.9.1"
+    "prettier": "^1.11.1"
   }
 }
