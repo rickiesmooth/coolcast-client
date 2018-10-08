@@ -28,25 +28,22 @@
     "react-native-web": "^0.9.1",
     "reason-apollo": "^0.14.1",
     "reason-react": "^0.5.3",
-    "reason-react-context": "^0.2.0",
-    "recompose": "^0.30.0",
     "subscriptions-transport-ws": "^0.9.15",
-    "webpack-node-externals": "^1.7.2",
-    "ws": "^6.0.0",
-    "graphql_ppx": "^0.2.7"
+    "ws": "^6.0.0"
   },
   "license": "MIT",
   "scripts": {
-    "build": "npm run bsbuild | gatsby build",
+    "build": "npm run bsb | gatsby build",
     "dev": "gatsby develop",
     "format": "prettier --write 'src/**/*.js'",
-    "bsbuild": "bsb -make-world",
+    "bsb": "bsb -make-world",
     "bsc": "bsb -clean-world"
   },
   "resolutions": {
     "graphql": "^0.13.2"
   },
   "devDependencies": {
+    "graphql_ppx": "^0.2.7",
     "prettier": "^1.11.1"
   }
 }
