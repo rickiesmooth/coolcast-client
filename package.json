@@ -29,15 +29,14 @@
     "reason-apollo": "^0.14.1",
     "reason-react": "^0.5.3",
     "subscriptions-transport-ws": "^0.9.15",
-    "webpack-node-externals": "^1.7.2",
     "ws": "^6.0.0"
   },
   "license": "MIT",
   "scripts": {
-    "build": "npm run bsbuild | gatsby build",
+    "build": "npm run bsb | gatsby build",
     "dev": "gatsby develop",
     "format": "prettier --write 'src/**/*.js'",
-    "bsbuild": "bsb -make-world",
+    "bsb": "bsb -make-world",
     "bsc": "bsb -clean-world"
   },
   "resolutions": {
