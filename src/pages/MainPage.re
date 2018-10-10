@@ -9,9 +9,9 @@ let make = _children => {
   render: _self =>
     <Layout>
       <View>
-        <GatsbyLink key="e" to_="/login">
-          {ReasonReact.string("siteTitle")}
-        </GatsbyLink>
+        <Text
+          value=" homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage"
+        />
       </View>
     </Layout>,
 };

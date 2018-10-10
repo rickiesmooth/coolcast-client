@@ -12,12 +12,18 @@ type state = {
 
 let ste = ReasonReact.string;
 
-let component = ReasonReact.reducerComponent("Signup");
+let component = ReasonReact.reducerComponent("Login");
+
+/* mutation {
+     login(email: "alice@prisma.io", password: "graphql") {
+       token
+     }
+   } */
 
 module CreateUser = [%graphql
   {|
-  mutation createUser($name: String! $email: String!, $password: String!) {
-      signup(name: $name, email: $email, password: $password) {
+  mutation loginUser($email: String!, $password: String!) {
+      login( email: $email, password: $password) {
           token
       }
   }
@@ -36,7 +42,7 @@ let make = _children => {
     },
   render: self =>
     <View>
-      <Text value="Signup to CoolCast" />
+      <Text value="Login to CoolCast" />
       <TextInput
         placeholder="email"
         onChangeText={text => self.send(Email(text))}
@@ -50,7 +56,6 @@ let make = _children => {
              (mutate, {result}) => {
                let mutation =
                  CreateUser.make(
-                   ~name="Bob",
                    ~email=self.state.email,
                    ~password=self.state.password,
                    (),
@@ -66,7 +71,7 @@ let make = _children => {
                | Loading => <Text value="loading" />
                | Data(res) =>
                  ignore(
-                   AsyncStorage.setItem("cc_token", res##signup##token, ()),
+                   AsyncStorage.setItem("cc_token", res##login##token, ()),
                  );
                  <GatsbyRedirect to_="/" noThrow=true />;
                | Error(_res) => <Text value="Error" />
@@ -74,6 +79,7 @@ let make = _children => {
              }
            }
       </CreateUserMutation>
+      <GatsbyLink to_="/signup"> <Text value="Or signup" /> </GatsbyLink>
     </View>,
 };
 

@@ -30,8 +30,13 @@ module MakePair = (Config: {
   };
 };
 
+type user = {
+  id: string,
+  email: string,
+};
+
 module UserContext =
   MakePair({
-    type t = string;
-    let defaultValue = "";
+    type t = user;
+    let defaultValue = {id: "", email: ""};
   });

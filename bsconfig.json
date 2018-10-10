@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-starter-reason",
+  "name": "app",
   "namespace": true,
   "reason": { "react-jsx": 2 },
   "bs-dependencies": [
