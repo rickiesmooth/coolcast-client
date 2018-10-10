@@ -7,10 +7,21 @@ let styles =
   StyleSheet.create(
     Style.{
       "head": style([color(String("#ggg")), fontSize(Float(32.))]),
-      "wrapper": style([marginBottom(Pt(15.))]),
+      "wrapper":
+        style([
+          flexDirection(Row),
+          maxWidth(Pt(960.)),
+          marginBottom(Pt(0.)),
+        ]),
+      "profile":
+        style([
+          display(Flex),
+          justifyContent(Center),
+          flexDirection(Column),
+          marginLeft(Auto),
+        ]),
       "header":
         style([
-          maxWidth(Pt(960.)),
           backgroundColor(String("#eee")),
           paddingVertical(Pt(8.)),
           paddingHorizontal(Pt(16.)),
@@ -18,15 +29,23 @@ let styles =
     },
   );
 
-let make = (~siteTitle: string, _children) => {
+let make = (~siteTitle: string, ~user, _children) => {
   ...component,
   render: _self =>
-    <View style=styles##wrapper>
-      <View style=styles##header>
+    <View style=styles##header>
+      <View style=styles##wrapper>
         <Text style=styles##head value=siteTitle />
-        <UserContext.Consumer>
-          ...{text => <Text value=text />}
-        </UserContext.Consumer>
+        <View style=styles##profile>
+          {
+            switch (user) {
+            | Some(u) => <Text value={u.email} />
+            | None =>
+              <GatsbyLink to_="/login">
+                {ReasonReact.string("Login")}
+              </GatsbyLink>
+            }
+          }
+        </View>
       </View>
     </View>,
 };

@@ -5,6 +5,7 @@
   "author": "Rick Smit",
   "dependencies": {
     "@glennsl/bs-json": "^3.0.0",
+    "@reach/router": "^1.2.1",
     "apollo-cache-inmemory": "^1.2.10",
     "apollo-client": "^2.4.2",
     "apollo-link": "^1.2.3",
