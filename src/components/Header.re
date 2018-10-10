@@ -11,6 +11,9 @@ let styles =
         style([
           flexDirection(Row),
           maxWidth(Pt(960.)),
+          width(Pct(100.0)),
+          alignSelf(Center),
+          flex(1.),
           marginBottom(Pt(0.)),
         ]),
       "profile":
@@ -34,11 +37,16 @@ let make = (~siteTitle: string, ~user, _children) => {
   render: _self =>
     <View style=styles##header>
       <View style=styles##wrapper>
-        <Text style=styles##head value=siteTitle />
+        <GatsbyLink to_="/">
+          <Text style=styles##head value=siteTitle />
+        </GatsbyLink>
         <View style=styles##profile>
           {
             switch (user) {
-            | Some(u) => <Text value={u.email} />
+            | Some(u) =>
+              <GatsbyLink to_="/profile">
+                <Text value={u.email} />
+              </GatsbyLink>
             | None =>
               <GatsbyLink to_="/login">
                 {ReasonReact.string("Login")}

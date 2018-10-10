@@ -14,12 +14,6 @@ let ste = ReasonReact.string;
 
 let component = ReasonReact.reducerComponent("Login");
 
-/* mutation {
-     login(email: "alice@prisma.io", password: "graphql") {
-       token
-     }
-   } */
-
 module CreateUser = [%graphql
   {|
   mutation loginUser($email: String!, $password: String!) {
