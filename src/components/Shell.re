@@ -7,7 +7,12 @@ let styles =
   StyleSheet.create(
     Style.{
       "container":
-        style([maxWidth(Pt(960.)), display(Flex), alignSelf(Center)]),
+        style([
+          maxWidth(Pt(960.)),
+          width(Pct(100.0)),
+          display(Flex),
+          alignSelf(Center),
+        ]),
     },
   );
 

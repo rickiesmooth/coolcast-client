@@ -26,7 +26,7 @@
     "react-apollo": "^2.2.4",
     "react-art": "^16.5.2",
     "react-helmet": "^5.2.0",
-    "react-native-web": "^0.9.1",
+    "react-native-web": "^0.9.2",
     "reason-apollo": "^0.14.1",
     "reason-react": "^0.5.3",
     "subscriptions-transport-ws": "^0.9.15",
