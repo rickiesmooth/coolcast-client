@@ -1,5 +1,6 @@
 open BsReactNative;
 open GatsbyLink;
+open GlobalStyles;
 
 type action =
   | Email(string)
@@ -35,15 +36,17 @@ let make = _children => {
     | Email(email) => (state => ReasonReact.Update({...state, email}))
     },
   render: self =>
-    <View>
+    <View style=GlobalStyles.Styles.containerSmall>
       <Text value="Login to CoolCast" />
       <TextInput
         placeholder="email"
         onChangeText={text => self.send(Email(text))}
+        style=Styles.paddedSmallVertical
       />
       <TextInput
         placeholder="password"
         onChangeText={text => self.send(Password(text))}
+        style=Styles.paddedSmallVertical
       />
       <CreateUserMutation>
         ...{
@@ -76,6 +79,3 @@ let make = _children => {
       <GatsbyLink to_="/signup"> <Text value="Or signup" /> </GatsbyLink>
     </View>,
 };
-
-let default =
-  ReasonReact.wrapReasonForJs(~component, jsProps => make(jsProps##children));

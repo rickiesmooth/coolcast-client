@@ -1,4 +1,5 @@
 open BsReactNative;
+open GatsbyLink;
 
 let component = ReasonReact.statelessComponent("profile");
 
@@ -7,10 +8,22 @@ let text = ReasonReact.string;
 let make = _children => {
   ...component,
   render: _self =>
-    <Layout>
-      <Text value="User page user page user page user page" />
-      <Button title="logout" onPress={() => ignore(AsyncStorage.clear())} />
-    </Layout>,
+    <Shell>
+      <View style=GlobalStyles.Styles.containerSmall>
+        <Text value="Profile page" />
+        <Button
+          title="logout"
+          onPress={
+            () =>
+              Js.Promise.(
+                AsyncStorage.clear()
+                |> then_(() => navigate("/") |> resolve)
+                |> ignore
+              )
+          }
+        />
+      </View>
+    </Shell>,
 };
 
 let default =

@@ -6,7 +6,7 @@ let component = ReasonReact.statelessComponent("Header");
 let styles =
   StyleSheet.create(
     Style.{
-      "head": style([color(String("#ggg")), fontSize(Float(32.))]),
+      "head": style([color(String("#ggg"))]),
       "wrapper":
         style([
           flexDirection(Row),
@@ -48,9 +48,7 @@ let make = (~siteTitle: string, ~user, _children) => {
                 <Text value={u.email} />
               </GatsbyLink>
             | None =>
-              <GatsbyLink to_="/login">
-                {ReasonReact.string("Login")}
-              </GatsbyLink>
+              <GatsbyLink to_="/login"> <Text value="Login" /> </GatsbyLink>
             }
           }
         </View>

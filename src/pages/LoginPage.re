@@ -6,7 +6,7 @@ let text = ReasonReact.string;
 
 let make = _children => {
   ...component,
-  render: _self => <Layout> <View> <Login /> </View> </Layout>,
+  render: _self => <Shell> <View> <Login /> </View> </Shell>,
 };
 
 let default =

@@ -35,7 +35,7 @@ let make = _children => {
     | Email(email) => (state => ReasonReact.Update({...state, email}))
     },
   render: self =>
-    <View>
+    <View style=GlobalStyles.Styles.containerSmall>
       <Text value="Signup to CoolCast" />
       <TextInput
         placeholder="email"
@@ -69,13 +69,10 @@ let make = _children => {
                    AsyncStorage.setItem("cc_token", res##signup##token, ()),
                  );
                  <GatsbyRedirect to_="/" noThrow=true />;
-               | Error(_res) => <Text value="Error" />
+               | Error(_) => <Text value="Error" />
                };
              }
            }
       </CreateUserMutation>
     </View>,
 };
-
-let default =
-  ReasonReact.wrapReasonForJs(~component, jsProps => make(jsProps##children));
