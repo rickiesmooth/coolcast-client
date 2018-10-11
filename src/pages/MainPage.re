@@ -7,13 +7,13 @@ let text = ReasonReact.string;
 let make = _children => {
   ...component,
   render: _self =>
-    <Layout>
+    <Shell>
       <View>
         <Text
           value="homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage"
         />
       </View>
-    </Layout>,
+    </Shell>,
 };
 
 let default =

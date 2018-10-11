@@ -7,12 +7,12 @@ let text = ReasonReact.string;
 let make = _children => {
   ...component,
   render: _self =>
-    <Layout>
+    <Shell>
       <View>
         <Signup />
-        <GatsbyLink to_="/"> {ReasonReact.string("Home")} </GatsbyLink>
+        <GatsbyLink to_="/"> <Text value="home" /> </GatsbyLink>
       </View>
-    </Layout>,
+    </Shell>,
 };
 
 let default =
