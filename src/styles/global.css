@@ -1,0 +1,27 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+}
+
+#___gatsby {
+  display: flex;
+  height: 100%;
+}
+
+/* hack for reach/router https://github.com/reach/router/issues/145 */
+#___gatsby div[role='group'] {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.95);
+  color: #eee;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -9,12 +9,7 @@ type state =
 type action =
   | Token(string);
 
-let component = ReasonReact.reducerComponent("Layout");
-
-let meta = [|
-  Helmet.metaField(~name="description", ~content="Sample"),
-  Helmet.metaField(~name="keywords", ~content="sample, something"),
-|];
+let component = ReasonReact.reducerComponent("Shell");
 
 module GetUser = [%graphql
   {|
@@ -54,34 +49,27 @@ let make = children => {
       |> ignore
     ),
   render: self =>
-    <View>
-      <Helmet title="Coolcast" meta />
-      {
-        switch (self.state) {
-        | Anonymous => <Layout> ...children </Layout>
-        | Loaded(_) =>
-          <GetUserQuery variables=userQuery##variables>
-            ...(
-                 ({result}) =>
-                   switch (result) {
-                   | Loading => <Layout> ...children </Layout>
-                   | Data(response) =>
-                     switch (response##me) {
-                     | Some(me) =>
-                       <UserContext.Provider
-                         value={id: me##id, email: me##email}>
-                         <Layout user={id: me##id, email: me##email}>
-                           ...children
-                         </Layout>
-                       </UserContext.Provider>
-                     | None => ReasonReact.null
-                     }
-                   | Error(error) =>
-                     <div> {ReasonReact.string(error##message)} </div>
-                   }
-               )
-          </GetUserQuery>
-        }
-      }
-    </View>,
+    switch (self.state) {
+    | Anonymous => <Layout> ...children </Layout>
+    | Loaded(_) =>
+      <GetUserQuery variables=userQuery##variables>
+        ...(
+             ({result}) =>
+               switch (result) {
+               | Loading => <Layout> ...children </Layout>
+               | Data(response) =>
+                 switch (response##me) {
+                 | Some(me) =>
+                   <UserContext.Provider value={id: me##id, email: me##email}>
+                     <Layout user={id: me##id, email: me##email}>
+                       ...children
+                     </Layout>
+                   </UserContext.Provider>
+                 | None => ReasonReact.null
+                 }
+               | Error(error) => <Text value=error##message />
+               }
+           )
+      </GetUserQuery>
+    },
 };

@@ -6,15 +6,15 @@ let component = ReasonReact.statelessComponent("Header");
 let styles =
   StyleSheet.create(
     Style.{
-      "head": style([color(String("#ggg"))]),
+      "head": style([color(String("#f58c93"))]),
       "wrapper":
         style([
           flexDirection(Row),
           maxWidth(Pt(960.)),
           width(Pct(100.0)),
-          alignSelf(Center),
-          flex(1.),
-          marginBottom(Pt(0.)),
+          /* alignSelf(Center), */
+          /* flex(1.), */
+          /* marginBottom(Pt(0.)), */
         ]),
       "profile":
         style([
@@ -25,7 +25,11 @@ let styles =
         ]),
       "header":
         style([
-          backgroundColor(String("#eee")),
+          backgroundColor(String("#000")),
+          /* position(Absolute),
+             bottom(Pt(0.)), */
+          width(Pct(100.0)),
+          alignItems(Center),
           paddingVertical(Pt(8.)),
           paddingHorizontal(Pt(16.)),
         ]),
@@ -45,10 +49,12 @@ let make = (~siteTitle: string, ~user, _children) => {
             switch (user) {
             | Some(u) =>
               <GatsbyLink to_="/profile">
-                <Text value={u.email} />
+                <Text value={u.email} style=styles##head />
               </GatsbyLink>
             | None =>
-              <GatsbyLink to_="/login"> <Text value="Login" /> </GatsbyLink>
+              <GatsbyLink to_="/login">
+                <Text style=styles##head value="Login" />
+              </GatsbyLink>
             }
           }
         </View>

@@ -19,16 +19,11 @@ let contextHandler = () => {
 
 let contextLink = ApolloLinks.createContextLink(contextHandler);
 
-let httpLink =
-  ApolloLinks.createHttpLink(~uri="https://coolcast-api.now.sh", ());
+let httpLink = ApolloLinks.createHttpLink(~uri="https://cc-api.now.sh", ());
 
 /* WebSocket client */
 let webSocketLink =
-  ApolloLinks.webSocketLink(
-    ~uri="wss://coolcast-api.now.sh",
-    ~reconnect=true,
-    (),
-  );
+  ApolloLinks.webSocketLink(~uri="wss://cc-api.now.sh", ~reconnect=true, ());
 
 /* based on test, execute left or right */
 let webSocketHttpLink =

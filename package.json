@@ -23,6 +23,7 @@
     "graphql": "0.13.2",
     "graphql-tag": "^2.10.0",
     "isomorphic-unfetch": "^3.0.0",
+    "modal-enhanced-react-native-web": "^0.2.0",
     "react-apollo": "^2.2.4",
     "react-art": "^16.5.2",
     "react-helmet": "^5.2.0",

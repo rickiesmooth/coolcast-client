@@ -12,4 +12,10 @@ module Styles = {
 
   let containerDefault =
     Style.concat([containerCentered, style([maxWidth(Pt(960.))])]);
+
+  let inputDefault =
+    Style.concat([
+      paddedSmallVertical,
+      style([marginBottom(Pt(16.)), color(String("#FFF"))]),
+    ]);
 };

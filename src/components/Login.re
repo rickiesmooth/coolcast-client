@@ -11,8 +11,6 @@ type state = {
   email: string,
 };
 
-let ste = ReasonReact.string;
-
 let component = ReasonReact.reducerComponent("Login");
 
 module CreateUser = [%graphql
@@ -36,17 +34,18 @@ let make = _children => {
     | Email(email) => (state => ReasonReact.Update({...state, email}))
     },
   render: self =>
-    <View style=GlobalStyles.Styles.containerSmall>
+    <View style=Styles.containerSmall>
       <Text value="Login to CoolCast" />
       <TextInput
         placeholder="email"
         onChangeText={text => self.send(Email(text))}
-        style=Styles.paddedSmallVertical
+        style=Styles.inputDefault
       />
       <TextInput
         placeholder="password"
         onChangeText={text => self.send(Password(text))}
-        style=Styles.paddedSmallVertical
+        style=Styles.inputDefault
+        secureTextEntry=true
       />
       <CreateUserMutation>
         ...{

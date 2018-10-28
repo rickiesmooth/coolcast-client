@@ -1,5 +1,6 @@
 open BsReactNative;
 open GatsbyLink;
+open GlobalStyles;
 
 type action =
   | Email(string)
@@ -40,10 +41,13 @@ let make = _children => {
       <TextInput
         placeholder="email"
         onChangeText={text => self.send(Email(text))}
+        style=Styles.inputDefault
       />
       <TextInput
         placeholder="password"
         onChangeText={text => self.send(Password(text))}
+        style=Styles.inputDefault
+        secureTextEntry=true
       />
       <CreateUserMutation>
         ...{
