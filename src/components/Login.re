@@ -49,19 +49,21 @@ let make = _children => {
       />
       <CreateUserMutation>
         ...{
-             (mutate, {result}) => {
-               let mutation =
-                 CreateUser.make(
-                   ~email=self.state.email,
-                   ~password=self.state.password,
-                   (),
-                 );
+             (mutate, {result}) =>
                switch (result) {
                | NotCalled =>
                  <Button
                    title="Login"
                    onPress=(
-                     _ => mutate(~variables=mutation##variables, ()) |> ignore
+                     _ => {
+                       let mutation =
+                         CreateUser.make(
+                           ~email=self.state.email,
+                           ~password=self.state.password,
+                           (),
+                         );
+                       mutate(~variables=mutation##variables, ()) |> ignore;
+                     }
                    )
                  />
                | Loading => <Text value="loading" />
@@ -71,8 +73,7 @@ let make = _children => {
                  );
                  <GatsbyRedirect to_="/" noThrow=true />;
                | Error(_res) => <Text value="Error" />
-               };
-             }
+               }
            }
       </CreateUserMutation>
       <GatsbyLink to_="/signup"> <Text value="Or signup" /> </GatsbyLink>

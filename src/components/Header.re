@@ -12,17 +12,9 @@ let styles =
           flexDirection(Row),
           maxWidth(Pt(960.)),
           width(Pct(100.0)),
-          /* alignSelf(Center), */
-          /* flex(1.), */
-          /* marginBottom(Pt(0.)), */
         ]),
-      "profile":
-        style([
-          display(Flex),
-          justifyContent(Center),
-          flexDirection(Column),
-          marginLeft(Auto),
-        ]),
+      "right": style([flexDirection(Row), marginLeft(Auto)]),
+      "profile": style([flexDirection(Row)]),
       "header":
         style([
           backgroundColor(String("#000")),
@@ -44,13 +36,18 @@ let make = (~siteTitle: string, ~user, _children) => {
         <GatsbyLink to_="/">
           <Text style=styles##head value=siteTitle />
         </GatsbyLink>
-        <View style=styles##profile>
+        <View style=styles##right>
           {
             switch (user) {
             | Some(u) =>
-              <GatsbyLink to_="/profile">
-                <Text value={u.email} style=styles##head />
-              </GatsbyLink>
+              <View style=styles##profile>
+                <GatsbyLink to_="/messages">
+                  <Text value="messages" style=styles##head />
+                </GatsbyLink>
+                <GatsbyLink to_="/profile">
+                  <Text value={u.email} style=styles##head />
+                </GatsbyLink>
+              </View>
             | None =>
               <GatsbyLink to_="/login">
                 <Text style=styles##head value="Login" />

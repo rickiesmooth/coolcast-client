@@ -4,11 +4,13 @@ open GlobalStyles;
 
 type action =
   | Email(string)
-  | Password(string);
+  | Password(string)
+  | Name(string);
 
 type state = {
   password: string,
   email: string,
+  name: string,
 };
 
 let ste = ReasonReact.string;
@@ -29,15 +31,21 @@ module CreateUserMutation = ReasonApollo.CreateMutation(CreateUser);
 
 let make = _children => {
   ...component,
-  initialState: () => {email: "", password: ""},
+  initialState: () => {email: "", password: "", name: ""},
   reducer: action =>
     switch (action) {
     | Password(pw) => (state => ReasonReact.Update({...state, password: pw}))
     | Email(email) => (state => ReasonReact.Update({...state, email}))
+    | Name(name) => (state => ReasonReact.Update({...state, name}))
     },
   render: self =>
     <View style=GlobalStyles.Styles.containerSmall>
       <Text value="Signup to CoolCast" />
+      <TextInput
+        placeholder="name"
+        onChangeText={text => self.send(Name(text))}
+        style=Styles.inputDefault
+      />
       <TextInput
         placeholder="email"
         onChangeText={text => self.send(Email(text))}
@@ -51,20 +59,22 @@ let make = _children => {
       />
       <CreateUserMutation>
         ...{
-             (mutate, {result}) => {
-               let mutation =
-                 CreateUser.make(
-                   ~name="Bob",
-                   ~email=self.state.email,
-                   ~password=self.state.password,
-                   (),
-                 );
+             (mutate, {result}) =>
                switch (result) {
                | NotCalled =>
                  <Button
                    title="Login"
                    onPress=(
-                     _ => mutate(~variables=mutation##variables, ()) |> ignore
+                     _ => {
+                       let mutation =
+                         CreateUser.make(
+                           ~name=self.state.name,
+                           ~email=self.state.email,
+                           ~password=self.state.password,
+                           (),
+                         );
+                       mutate(~variables=mutation##variables, ()) |> ignore;
+                     }
                    )
                  />
                | Loading => <Text value="loading" />
@@ -74,8 +84,7 @@ let make = _children => {
                  );
                  <GatsbyRedirect to_="/" noThrow=true />;
                | Error(_) => <Text value="Error" />
-               };
-             }
+               }
            }
       </CreateUserMutation>
     </View>,
