@@ -9,7 +9,8 @@ let make = _children => {
   ...component,
   render: _self =>
     <Shell>
-      <View> <Text value="Messages page" /> <Messenger /> </View>
+      <Text value="Messages page" />
+      <Messenger />
     </Shell>,
 };
 

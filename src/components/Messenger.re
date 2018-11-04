@@ -16,7 +16,8 @@ let styles =
           flex(1.),
           maxWidth(Pt(220.)),
           height(Pct(100.0)),
-          backgroundColor(String("purple")),
+          borderColor(String("#f58c93")),
+          borderWidth(1.),
         ]),
       "right":
         style([
@@ -29,7 +30,8 @@ let styles =
   );
 
 type action =
-  | Query(string);
+  | Query(string)
+  | NewMessage;
 
 type state = {
   query: string,
@@ -40,21 +42,24 @@ let component = ReasonReact.reducerComponent("Messenger");
 
 let make = _children => {
   ...component,
-  initialState: () => {query: "", newMessage: true},
+  initialState: () => {query: "", newMessage: false},
   reducer: action =>
     switch (action) {
     | Query(q) => (state => ReasonReact.Update({...state, query: q}))
+    | NewMessage => (state => ReasonReact.Update({...state, newMessage: true}))
     },
   render: self =>
     <View style=styles##wrapper>
-      <View style=styles##left> <Text value="haha left" /> </View>
+      <View style=styles##left>
+      <Button
+          title="newMessage"
+          onPress={
+            () => self.send(NewMessage)
+          }
+        />
+      </View>
       <View style=styles##right>
-        /* {self.state.newMessage === true ? <NewMessage /> : <ChatId chatId />} */
-
-          <TextInput
-            placeholder="type name"
-            onChangeText={e => self.send(Query(e))}
-          />
+          <Chat newMessage={self.state.newMessage} />
         </View>
     </View>,
 };
