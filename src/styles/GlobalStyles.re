@@ -3,7 +3,7 @@ open BsReactNative;
 module Styles = {
   open Style;
 
-  let containerCentered = style([width(Pct(100.0)), alignSelf(Center)]);
+  let containerCentered = style([width(Pct(100.0)), flex(1.), alignSelf(Center)]);
 
   let paddedSmallVertical = style([paddingVertical(Pt(16.))]);
 
