@@ -6,8 +6,7 @@
     "scripts": {
         "build": "babel src --out-dir .",
         "watch": "babel -w src --out-dir .",
-        "prepublish": "npm run build",
-        "test": "jest"
+        "prepublish": "npm run build"
     },
     "keywords": [
         "gatsby",
@@ -21,8 +20,7 @@
     "repository": "https://github.com/jtberglund/gatsby-plugin-reason",
     "devDependencies": {
         "babel-cli": "^6.26.0",
-        "babel-preset-env": "^1.6.1",
-        "jest": "^23.1.0"
+        "babel-preset-env": "^1.6.1"
     },
     "dependencies": {
         "bs-loader": "^2.0.6",
