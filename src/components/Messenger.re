@@ -7,7 +7,6 @@ let styles =
         style([
           width(Pct(100.0)),
           height(Pct(100.0)),
-          /* backgroundColor(String("blue")), */
           flexDirection(Row),
         ]),
       "left":
@@ -20,46 +19,71 @@ let styles =
           borderWidth(1.),
         ]),
       "right":
-        style([
-          flexDirection(Column),
-          flex(1.),
-          height(Pct(100.0)),
-          /* backgroundColor(String("red")), */
-        ]),
+        style([flexDirection(Column), flex(1.), height(Pct(100.0))]),
     },
   );
 
-type action =
-  | Query(string)
-  | NewMessage;
+type navigationState =
+  | MessagesHome
+  | MessageNew
+  | MessageNewTo(string)
+  | MessageActive(string);
 
-type state = {
-  query: string,
-  newMessage: bool,
-};
+type action =
+  | Navigate(navigationState);
+
+type state = {currentPage: navigationState};
+
+let urlToShownPage = (url: ReasonReact.Router.url) =>
+  switch (url.path) {
+  | [] => MessagesHome
+  | [_] => MessagesHome
+  | [_, id, ...rest] =>
+    ignore(rest);
+    switch (id, url.search) {
+    | ("new", "") => MessageNew
+    | ("new", search) => MessageNewTo(search)
+    | _ => MessageActive(id)
+    };
+  };
 
 let component = ReasonReact.reducerComponent("Messenger");
 
 let make = _children => {
   ...component,
-  initialState: () => {query: "", newMessage: false},
-  reducer: action =>
+  initialState: () => {
+    currentPage:
+      urlToShownPage(ReasonReact.Router.dangerouslyGetInitialUrl()),
+  },
+  didMount: self => {
+    let token =
+      ReasonReact.Router.watchUrl(url =>
+        self.send(Navigate(urlToShownPage(url)))
+      );
+    self.onUnmount(() => ReasonReact.Router.unwatchUrl(token));
+  },
+  reducer: (action, _state) =>
     switch (action) {
-    | Query(q) => (state => ReasonReact.Update({...state, query: q}))
-    | NewMessage => (state => ReasonReact.Update({...state, newMessage: true}))
+    | Navigate(page) => ReasonReact.Update({currentPage: page})
     },
-  render: self =>
+  render: self => {
+    let body =
+      switch (self.state.currentPage) {
+      | MessagesHome => <Chat chatId="n/a" />
+      | MessageNew => <UserSearch />
+      | MessageNewTo(userId) => <NewMessage userId />
+      | MessageActive(chatId) => <Chat chatId />
+      };
     <View style=styles##wrapper>
       <View style=styles##left>
-      <Button
+        <Button
           title="newMessage"
-          onPress={
-            () => self.send(NewMessage)
-          }
+          onPress={() => ReasonReact.Router.push("/messages/new")}
         />
+        <RecentChatsQuery />
+        <Text value="hey" />
       </View>
-      <View style=styles##right>
-          <Chat newMessage={self.state.newMessage} />
-        </View>
-    </View>,
+      <View style=styles##right> body </View>
+    </View>;
+  },
 };

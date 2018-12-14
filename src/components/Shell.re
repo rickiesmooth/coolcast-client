@@ -18,6 +18,12 @@ module GetUser = [%graphql
           id
           name
           email
+          chats {
+            id
+            users {
+              id
+            }
+          }
       }
   }
 |}
@@ -60,14 +66,13 @@ let make = children => {
                | Data(response) =>
                  switch (response##me) {
                  | Some(me) =>
-                   <UserContext.Provider value={id: me##id, email: me##email}>
-                     <Layout user={id: me##id, email: me##email}>
-                       ...children
-                     </Layout>
-                   </UserContext.Provider>
+                   <Layout user={id: me##id, email: me##email}>
+                     ...children
+                   </Layout>
                  | None => ReasonReact.null
                  }
-               | Error(error) => <Text value=error##message />
+               | Error(error) =>
+                 <Layout> <Text value=error##message /> </Layout>
                }
            )
       </GetUserQuery>

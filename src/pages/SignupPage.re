@@ -1,5 +1,3 @@
-open BsReactNative;
-
 let component = ReasonReact.statelessComponent("signup");
 
 let text = ReasonReact.string;

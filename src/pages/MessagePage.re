@@ -1,5 +1,5 @@
 open BsReactNative;
-open GatsbyLink;
+open GatsbyRouter;
 
 let component = ReasonReact.statelessComponent("messages");
 
@@ -8,10 +8,7 @@ let text = ReasonReact.string;
 let make = _children => {
   ...component,
   render: _self =>
-    <Shell>
-      <Text value="Messages page" />
-      <Messenger />
-    </Shell>,
+    <Shell> <Text value="Messages page" /> <Messenger /> </Shell>,
 };
 
 let default =

@@ -3,7 +3,8 @@ open BsReactNative;
 module Styles = {
   open Style;
 
-  let containerCentered = style([width(Pct(100.0)), flex(1.), alignSelf(Center)]);
+  let containerCentered =
+    style([width(Pct(100.0)), flex(1.), alignSelf(Center)]);
 
   let paddedSmallVertical = style([paddingVertical(Pt(16.))]);
 
@@ -14,8 +15,5 @@ module Styles = {
     Style.concat([containerCentered, style([maxWidth(Pt(960.))])]);
 
   let inputDefault =
-    Style.concat([
-      paddedSmallVertical,
-      style([marginBottom(Pt(16.)), color(String("#FFF"))]),
-    ]);
+    Style.concat([paddedSmallVertical, style([color(String("#FFF"))])]);
 };

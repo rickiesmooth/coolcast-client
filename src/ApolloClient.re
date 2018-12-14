@@ -20,6 +20,7 @@ let contextHandler = () => {
 let contextLink = ApolloLinks.createContextLink(contextHandler);
 
 let httpLink = ApolloLinks.createHttpLink(~uri="https://cc-api.now.sh", ());
+/* let httpLink = ApolloLinks.createHttpLink(~uri="http://localhost:3030", ()); */
 
 /* WebSocket client */
 let webSocketLink =

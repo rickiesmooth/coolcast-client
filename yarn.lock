@@ -2007,13 +2007,13 @@ bs-loader@^2.0.6:
     loader-utils "^1.1.0"
     read-bsconfig "^1.0.1"
 
-bs-platform@^4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-4.0.6.tgz#e7f156c77ad3efafb0c0291b41dcf1b06f93c192"
+bs-platform@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-4.0.8.tgz#d7b1ee9b21efdb549669dff797f578e229bcbe20"
 
-bs-react-native@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/bs-react-native/-/bs-react-native-0.9.0.tgz#198a0d198d296e0a500be950ad43d8d31497cbe9"
+bs-react-native@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/bs-react-native/-/bs-react-native-0.10.0.tgz#4a9167cbe4c858008a9e56a0f745ba723c74101c"
 
 bsb-js@^1.0.0, bsb-js@^1.1.7:
   version "1.1.7"

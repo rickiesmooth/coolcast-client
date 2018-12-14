@@ -1,52 +1,30 @@
 open BsReactNative;
+open GlobalStyles;
 
-let component = ReasonReact.statelessComponent("UserSearch");
+type state = {query: string};
 
-module GetAllRecipitants = [%graphql
-  {|
-   query getUsers($query: String!){
-       searchUser(string: $query) {
-           name
-           email
-       }
-   }
- |}
-];
+type action =
+  | Query(string);
 
-module GetRecipitantsListQuery = ReasonApollo.CreateQuery(GetAllRecipitants);
+let component = ReasonReact.reducerComponent("AutoComplete");
 
-let myKeyExtractor = (_item, index) => string_of_int(index);
-let renderMyItem =
-  FlatList.renderItem(user =>
-    switch (user.item) {
-    | Some(user) =>
-      <View> <Text value=user##name /> <Text value=user##email /> </View>
-    | None => <Text value="user not found" />
-    }
-  );
-
-let make = (~query, _children) => {
+let make = _children => {
   ...component,
-  render: _self => {
-    let getUsersQuery = GetAllRecipitants.make(~query, ());
-    <GetRecipitantsListQuery variables=getUsersQuery##variables>
-      ...{
-           ({result}) =>
-             switch (result) {
-             | Loading => <Text value="loading" />
-             | Error(_e) => <Text value="Error" />
-             | Data(response) =>
-               switch (response##searchUser) {
-               | Some(users) =>
-                 <FlatList
-                   data=users
-                   keyExtractor=myKeyExtractor
-                   renderItem=renderMyItem
-                 />
-               | None => <Text value="user not found" />
-               }
-             }
-         }
-    </GetRecipitantsListQuery>;
-  },
+  initialState: () => {query: ""},
+  reducer: (action, _state) =>
+    switch (action) {
+    | Query(q) => ReasonReact.Update({query: q})
+    },
+  render: self =>
+    <View>
+      <TextInput
+        placeholder="type name"
+        onChangeText={e => self.send(Query(e))}
+        style=Styles.inputDefault
+      />
+      {
+        String.length(self.state.query) > 1 ?
+          <UserQuery query={self.state.query} /> : ReasonReact.null
+      }
+    </View>,
 };
