@@ -9,7 +9,7 @@
     "format": "prettier --write 'src/**/*.js'",
     "bsb": "bsb -make-world",
     "bsc": "bsb -clean-world",
-    "introspect": "send-introspection-query http://localhost:3030"
+    "introspect": "send-introspection-query https://cc-api.now.sh"
   },
   "dependencies": {
     "@glennsl/bs-json": "^3.0.0",
@@ -32,6 +32,8 @@
     "graphql": "0.13.2",
     "graphql-tag": "^2.10.0",
     "isomorphic-unfetch": "^3.0.0",
+    "micro": "^9.3.3",
+    "micro-cors": "^0.1.1",
     "modal-enhanced-react-native-web": "^0.2.0",
     "react-apollo": "^2.2.4",
     "react-art": "^16.5.2",
@@ -40,6 +42,7 @@
     "reason-apollo": "^0.14.1",
     "reason-react": "^0.5.3",
     "subscriptions-transport-ws": "^0.9.15",
+    "types": "^0.1.1",
     "ws": "^6.0.0"
   },
   "license": "MIT",

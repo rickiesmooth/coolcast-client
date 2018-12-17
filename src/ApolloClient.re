@@ -19,12 +19,21 @@ let contextHandler = () => {
 
 let contextLink = ApolloLinks.createContextLink(contextHandler);
 
-let httpLink = ApolloLinks.createHttpLink(~uri="https://cc-api.now.sh", ());
-/* let httpLink = ApolloLinks.createHttpLink(~uri="http://localhost:3030", ()); */
+/* let httpLink =
+   ApolloLinks.createHttpLink(
+     ~uri="https://cc-api-nrzvvn7l9.now.sh/graphql",
+     (),
+   ); */
+let httpLink =
+  ApolloLinks.createHttpLink(~uri="https://cc-api.now.sh/graphql", ());
 
 /* WebSocket client */
 let webSocketLink =
-  ApolloLinks.webSocketLink(~uri="wss://cc-api.now.sh", ~reconnect=true, ());
+  ApolloLinks.webSocketLink(
+    ~uri="wss://cc-ws-api.now.sh",
+    ~reconnect=true,
+    (),
+  );
 
 /* based on test, execute left or right */
 let webSocketHttpLink =
