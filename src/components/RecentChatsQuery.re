@@ -4,18 +4,18 @@ open Belt;
 
 let component = ReasonReact.statelessComponent("RecentChatsQuery");
 
+/* type to = {
+     id: string
+   }; */
+
 module GetRecentChats = [%graphql
   {|
 query getRecentChatsQuery{
     recentChats {
         id
-        users {
+        toUser {
           id
           name
-        }
-        messages {
-            id
-            text
         }
     }
 }
@@ -28,7 +28,7 @@ let renderUserItem =
     | Some(chat) =>
       <TouchableWithoutFeedback
         onPress=(_ => ReasonReact.Router.push("/messages/" ++ chat##id))>
-        <View> <Text value=chat##id /> </View>
+        <View> <Text value=chat##toUser##name /> </View>
       </TouchableWithoutFeedback>
 
     | None => <Text value="user not found" />

@@ -20,7 +20,7 @@ module GetUser = [%graphql
           email
           chats {
             id
-            users {
+            toUser {
               id
             }
           }
