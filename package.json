@@ -4,8 +4,11 @@
   "version": "0.1.0",
   "author": "Rick Smit",
   "scripts": {
-    "build": "gatsby build",
+    "build": "npm run bs:build && gatsby build",
     "dev": "gatsby develop",
+    "bs:build": "bsb -make-world",
+    "bs:clean": "bsb -clean-world",
+    "bs:watch": "bsb -make-world -w",
     "format": "prettier --write 'src/**/*.js'",
     "introspect": "send-introspection-query https://cc-api.now.sh"
   },
