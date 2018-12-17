@@ -4695,11 +4695,10 @@ gatsby-plugin-react-helmet@^2.0.10:
   dependencies:
     babel-runtime "^6.26.0"
 
-gatsby-plugin-react-native-web@2.0.0-alpha.0:
-  version "2.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-react-native-web/-/gatsby-plugin-react-native-web-2.0.0-alpha.0.tgz#436629a9b7c4990e6448aa6aa587e6673a8ef926"
-  dependencies:
-    babel-runtime "^6.26.0"
+gatsby-plugin-react-native-web@2.0.0-beta.0:
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-react-native-web/-/gatsby-plugin-react-native-web-2.0.0-beta.0.tgz#421bcdd96f42b7c1b13a2b70c73f508884f5a88b"
+  integrity sha512-ApJUgNEJw9bBazD6cmdhpX5j/3tfzRVgjJGKOM81ZF4Y0teakZFmZJsCeR/TY4ZM6hP+bCT+Le8CY65IFeu3eA==
 
 gatsby-plugin-reason@^1.3.0:
   version "1.3.0"
