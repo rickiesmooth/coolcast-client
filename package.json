@@ -4,11 +4,9 @@
   "version": "0.1.0",
   "author": "Rick Smit",
   "scripts": {
-    "build": "npm run bsb | gatsby build",
+    "build": "gatsby build",
     "dev": "gatsby develop",
     "format": "prettier --write 'src/**/*.js'",
-    "bsb": "bsb -make-world",
-    "bsc": "bsb -clean-world",
     "introspect": "send-introspection-query https://cc-api.now.sh"
   },
   "dependencies": {
@@ -21,9 +19,9 @@
     "apollo-link-error": "^1.1.1",
     "apollo-link-http": "^1.5.5",
     "apollo-link-ws": "^1.0.9",
-    "babel-plugin-react-native-web": "^0.9.1",
+    "apollo-upload-client": "^9.1.0",
     "bs-fetch": "^0.3.0",
-    "bs-platform": "^4.0.8",
+    "bs-platform": "^4.0.14",
     "bs-react-native": "^0.10.0",
     "gatsby": "^2.0.12",
     "gatsby-plugin-react-helmet": "^2.0.10",
@@ -32,9 +30,6 @@
     "graphql": "0.13.2",
     "graphql-tag": "^2.10.0",
     "isomorphic-unfetch": "^3.0.0",
-    "micro": "^9.3.3",
-    "micro-cors": "^0.1.1",
-    "modal-enhanced-react-native-web": "^0.2.0",
     "react-apollo": "^2.2.4",
     "react-art": "^16.5.2",
     "react-helmet": "^5.2.0",
@@ -42,14 +37,14 @@
     "reason-apollo": "^0.14.1",
     "reason-react": "^0.5.3",
     "subscriptions-transport-ws": "^0.9.15",
-    "types": "^0.1.1",
-    "ws": "^6.0.0"
+    "types": "^0.1.1"
   },
   "license": "MIT",
   "resolutions": {
     "graphql": "^0.13.2"
   },
   "devDependencies": {
+    "babel-plugin-react-native-web": "^0.9.9",
     "graphql_ppx": "^0.2.7",
     "prettier": "^1.11.1"
   }

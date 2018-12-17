@@ -11,7 +11,6 @@ let make = _children => {
           value="homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage homepage"
         />
       </View>
-      <EnhancedModal isVisible=0> <Text value="haha" /> </EnhancedModal>
     </Shell>,
 };
 
