@@ -1,0 +1,39 @@
+{
+  "name": "coolio",
+  "version": "0.0.1",
+  "private": true,
+  "main": "__generated__/AppEntry.js",
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "web": "expo start --web",
+    "re:clean": "bsb -clean-world",
+    "re:watch": "bsb -clean-world -make-world -w",
+    "re:build": "bsb -clean-world -make-world",
+    "postinstall": "expo-yarn-workspaces postinstall",
+    "test": "jest"
+  },
+  "dependencies": {
+    "expo": "^35.0.0",
+    "react": "^16.8.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
+    "react-native-web": "^0.11.7",
+    "reason-react": "^0.7.0",
+    "reason-react-native": "^0.60.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.3",
+    "@babel/runtime": "^7.3.1",
+    "@react-native-community/eslint-config": "^0.0.3",
+    "babel-jest": "^24.1.0",
+    "babel-preset-expo": "^6.0.0",
+    "bs-platform": "^5.0.6",
+    "expo-yarn-workspaces": "^1.2.0",
+    "jest": "^24.1.0",
+    "react-test-renderer": "16.8.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}

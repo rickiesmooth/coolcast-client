@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "local:web": "yarn workspaces run web"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}

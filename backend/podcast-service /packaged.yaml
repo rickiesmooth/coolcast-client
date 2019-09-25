@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template for fetch function
+Parameters:
+  ParentStackName:
+    Type: String
+    Default: ''
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  FetchGithubDataApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+  FetchGithubDataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/index.handler
+      Runtime: nodejs8.10
+      Environment:
+        Variables:
+          GITHUB_TOKEN:
+            Fn::Sub: ${ParentStackName}-Token
+      Events:
+        Contributions:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: FetchGithubDataApiGateway
+            Path: /github
+            Method: get
+      CodeUri: s3://personal-website-pipelinebucket-1qz04wu4dm62b/e7165acfc581f124eb7d85e605279782
+  BasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      BasePath: ''
+      Stage:
+        Ref: FetchGithubDataApiGateway.Stage
+      DomainName:
+        Fn::ImportValue:
+          Fn::Sub: ${ParentStackName}-DomainName
+      RestApiId:
+        Ref: FetchGithubDataApiGateway
+    DependsOn: FetchGithubDataApiGateway
+Outputs:
+  FetchGithubDataApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${FetchGithubDataApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/github/
