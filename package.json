@@ -1,10 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "local:web": "yarn workspaces run web"
+    "local:web": "yarn workspaces run web",
+    "re:clean": "yarn workspaces run re:clean"
   },
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "resolutions": {
+    "@reach/router": "1.3.0-beta.0"
+  }
 }

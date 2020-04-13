@@ -1,50 +1,159 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for fetch function
+Description: SAM Template for graphql api
 Parameters:
-  ParentStackName:
+  ApiName:
+    Default: appsync-lambda
+    Description: Name of the AWS Lambda Function.
     Type: String
-    Default: ''
-Globals:
-  Function:
-    Timeout: 3
+    MinLength: 1
+    MaxLength: 28
+    AllowedPattern: ^[a-z][a-z0-9-]*$
 Resources:
-  FetchGithubDataApiGateway:
-    Type: AWS::Serverless::Api
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
     Properties:
-      StageName: Prod
-  FetchGithubDataFunction:
-    Type: AWS::Serverless::Function
+      Name:
+        Fn::Sub: ${ApiName}-graphql-api
+      AuthenticationType: API_KEY
+  ApiKey:
+    Type: AWS::AppSync::ApiKey
     Properties:
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+  GraphQLSchema:
+    Type: AWS::AppSync::GraphQLSchema
+    Properties:
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      DefinitionS3Location: s3://coolcast-podcast-service/e6a69472f5a87d77ce9bc33391c778ec
+  AppSyncResolverGetPodcast:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      TypeName: Query
+      FieldName: getPodcast
+      DataSourceName:
+        Fn::GetAtt:
+        - AppSyncDataSource
+        - Name
+      RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke",
+        "payload": { "field": "getPodcast", "arguments": $utils.toJson($context.arguments)
+        } }'
+      ResponseMappingTemplate: $util.toJson($context.result)
+  AppSyncResolverGetSearchResults:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      TypeName: Query
+      FieldName: getSearchResults
+      DataSourceName:
+        Fn::GetAtt:
+        - AppSyncDataSource
+        - Name
+      RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke",
+        "payload": { "field": "getSearchResults", "arguments": $utils.toJson($context.arguments)
+        } }'
+      ResponseMappingTemplate: $util.toJson($context.result)
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName:
+        Ref: ApiName
       Handler: src/index.handler
-      Runtime: nodejs8.10
-      Environment:
-        Variables:
-          GITHUB_TOKEN:
-            Fn::Sub: ${ParentStackName}-Token
-      Events:
-        Contributions:
-          Type: Api
-          Properties:
-            RestApiId:
-              Ref: FetchGithubDataApiGateway
-            Path: /github
-            Method: get
-      CodeUri: s3://personal-website-pipelinebucket-1qz04wu4dm62b/e7165acfc581f124eb7d85e605279782
-  BasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
+      Runtime: nodejs10.x
+      Role:
+        Fn::GetAtt:
+        - LambdaExecutionRole
+        - Arn
+      Code:
+        S3Bucket: coolcast-podcast-service
+        S3Key: 8cc4f609c8a2befc7c4a774e9fa5369f
+  AppSyncDataSource:
+    Type: AWS::AppSync::DataSource
     Properties:
-      BasePath: ''
-      Stage:
-        Ref: FetchGithubDataApiGateway.Stage
-      DomainName:
-        Fn::ImportValue:
-          Fn::Sub: ${ParentStackName}-DomainName
-      RestApiId:
-        Ref: FetchGithubDataApiGateway
-    DependsOn: FetchGithubDataApiGateway
+      ApiId:
+        Fn::GetAtt:
+        - GraphQLApi
+        - ApiId
+      Name: handler
+      Type: AWS_LAMBDA
+      LambdaConfig:
+        LambdaFunctionArn:
+          Fn::GetAtt:
+          - LambdaFunction
+          - Arn
+      ServiceRoleArn:
+        Fn::GetAtt:
+        - AppSyncServiceRole
+        - Arn
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: LambdaExecutionRoleLogAccess
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:*
+            Resource: arn:aws:logs:*:*:*
+  AppSyncServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - appsync.amazonaws.com
+          Action:
+          - sts:AssumeRole
+  AppSyncLambdaInvokePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AppSyncLambdaInvokePolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - lambda:*
+          Resource: '*'
+      Roles:
+      - Ref: AppSyncServiceRole
 Outputs:
-  FetchGithubDataApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
+  GraphQLApiEndpoint:
+    Description: GraphQL API URL
     Value:
-      Fn::Sub: https://${FetchGithubDataApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/github/
+      Fn::GetAtt:
+      - GraphQLApi
+      - GraphQLUrl
+  ApiKey:
+    Description: API Key
+    Value:
+      Fn::GetAtt:
+      - ApiKey
+      - ApiKey

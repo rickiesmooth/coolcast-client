@@ -1,58 +1,19 @@
-const { httpsRequest } = require("@lambdas/common");
+const axios = require("axios");
 
-const githubOptions = {
-  hostname: "api.github.com",
-  path: "/graphql",
-  method: "POST",
+// Set config defaults when creating the instance
+const instance = axios.create({
+  baseURL: "https://listen-api.listennotes.com",
   headers: {
-    "Content-Type": "application/json",
-    "User-Agent": "node",
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+    "X-ListenAPI-Key": process.env.LISTEN_API_KEY
   }
-};
-
-const query = JSON.stringify({
-  query: `
-    {
-      viewer {
-        repositoriesContributedTo(first: 100, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
-          nodes {
-            nameWithOwner
-            url
-          }
-        }
-        itemShowcase {
-          items(first:5) {
-            edges {
-              node {
-                ... on Repository {
-                  name
-                  url
-                  descriptionHTML
-                  repositoryTopics(first: 8) {
-                    edges {
-                      node {
-                        topic {
-													name
-												}
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    `
 });
 
-exports.fetchGithubData = () => {
-  if (!process.env.GITHUB_TOKEN) {
-    return { errors: "No GitHub API key provided" };
-  }
-  return httpsRequest(githubOptions, query)
-    .then(res => JSON.parse(res))
+exports.fetchSearchResults = async q =>
+  await instance
+    .get("/api/v2/typeahead", { params: { q, show_podcasts: 1 } })
     .catch(e => ({ errors: e.message }));
-};
+
+exports.fetchPodcast = async ({ id, next }) =>
+  await instance
+    .get(`/api/v2/podcasts/${id}`, { params: { next_episode_pub_date: next } })
+    .catch(e => ({ errors: e.message }));

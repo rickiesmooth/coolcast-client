@@ -4,10 +4,13 @@
   "reason": {
     "react-jsx": 3
   },
-  "package-specs": {
-    "module": "es6",
-    "in-source": true
-  },
+  "bsc-flags": ["-bs-super-errors"],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
   "suffix": ".bs.js",
   "sources": [
     {
@@ -15,5 +18,12 @@
       "subdirs": true
     }
   ],
-  "bs-dependencies": ["reason-react", "reason-react-native"]
+  "ppx-flags": ["@baransu/graphql_ppx_re/ppx6"],
+  "bs-dependencies": [
+    "reason-react",
+    "reason-react-native",
+    "reason-apollo",
+    "reason-apollo-hooks",
+    "reason-expo"
+  ]
 }

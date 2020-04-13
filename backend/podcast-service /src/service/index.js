@@ -1,20 +1,40 @@
-const { fetchGithubData } = require("./retrieve");
-const { normalizeGithubData } = require("./normalize");
+const { fetchSearchResults, fetchPodcast } = require("./retrieve");
+const { normalizeSearchResult } = require("./normalize");
 
-class GithubService {
-  constructor(fetchGithubData, normalizeResponse) {
-    this.fetch = fetchGithubData;
-    this.normalize = normalizeResponse;
+class PodcastService {
+  constructor(fetchSearchResults, fetchPodcast, normalizeSearchResults) {
+    this.fetchSearchResults = fetchSearchResults;
+    this.fetchPodcast = fetchPodcast;
+    this.normalize = normalizeSearchResults;
   }
-  retrieve() {
-    return this.fetch().then(response => {
-      const { data, errors } = this.normalize(response);
-      return {
-        data: JSON.stringify(data),
-        errors: JSON.stringify(errors)
-      };
-    });
+  getSearchResults(query) {
+    return this.fetchSearchResults(query).then(this.normalize);
+  }
+  getPodcast(id) {
+    return this.fetchPodcast(id).then(
+      ({
+        data: {
+          id,
+          episodes,
+          title,
+          thumbnail,
+          description,
+          next_episode_pub_date
+        }
+      }) => ({
+        id,
+        episodes,
+        description,
+        title,
+        next: `${next_episode_pub_date}`,
+        thumbnail
+      })
+    );
   }
 }
 
-exports.githubService = new GithubService(fetchGithubData, normalizeGithubData);
+exports.podcastService = new PodcastService(
+  fetchSearchResults,
+  fetchPodcast,
+  normalizeSearchResult
+);

@@ -1,0 +1,37 @@
+schema {
+  query: Query
+}
+
+type Query {
+  getPodcast(input: PodcastInput!): Podcast!
+  getSearchResults(query: String!): [SearchResult]
+}
+
+input PodcastInput {
+  id: ID!
+  next: String
+}
+
+type SearchResult {
+  id: ID!
+  thumbnail: String!
+  title: String!
+}
+
+type Podcast {
+  id: ID!
+  thumbnail: String!
+  title: String!
+  description: String!
+  next: String!
+  episodes: [Episode!]!
+}
+
+type Episode {
+  id: ID!
+  audio: String!
+  image: String!
+  title: String!
+  thumbnail: String!
+  description: String!
+}

@@ -10,9 +10,12 @@
   "scripts": {
     "test": "jest",
     "dev": "sam local start-api",
-    "deploy:package": "sam package --output-template-file packaged.yaml --s3-bucket $LAMBDA_BUCKET",
-    "deploy:aws": "aws cloudformation deploy --template-file packaged.yaml --stack-name $DEPLOYED_STACKNAME --capabilities CAPABILITY_IAM",
-    "deploy": "npm run deploy:package && npm run deploy:aws",
+    "deploy:package": "sam package --output-template-file packaged.yaml --s3-bucket coolcast-podcast-service",
+    "deploy:aws": "aws cloudformation deploy --template-file packaged.yaml --stack-name coolcast-graphql-stack --capabilities CAPABILITY_IAM",
+    "deploy": "dotenv npm run deploy:package && npm run deploy:aws",
     "remove": "aws cloudformation delete-stack --stack-name $REMOVED_STACKNAME"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
   }
 }

@@ -1,47 +1,131 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: SAM Template for fetch function
+Description: SAM Template for graphql api
 
 Parameters:
-  ParentStackName:
+  ApiName:
+    Default: appsync-lambda
+    Description: Name of the AWS Lambda Function.
     Type: String
-    Default: ""
-
-Globals:
-  Function:
-    Timeout: 3
+    MinLength: 1
+    MaxLength: 28
+    AllowedPattern: "^[a-z][a-z0-9-]*$"
 
 Resources:
-  FetchGithubDataApiGateway:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: Prod
-  FetchGithubDataFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      Handler: src/index.handler
-      Runtime: nodejs8.10
-      Environment:
-        Variables:
-          GITHUB_TOKEN: !Sub ${ParentStackName}-Token
-      Events:
-        Contributions:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref "FetchGithubDataApiGateway"
-            Path: /github
-            Method: get
-  BasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      BasePath: ""
-      Stage: !Ref FetchGithubDataApiGateway.Stage
-      DomainName:
-        Fn::ImportValue: !Sub ${ParentStackName}-DomainName
-      RestApiId: !Ref FetchGithubDataApiGateway
-    DependsOn: FetchGithubDataApiGateway
+  #################
+  # AWS Resources #
+  #################
 
+  GraphQLApi:
+    Type: AWS::AppSync::GraphQLApi
+    Properties:
+      Name: !Sub ${ApiName}-graphql-api
+      AuthenticationType: API_KEY
+
+  ApiKey:
+    Type: AWS::AppSync::ApiKey
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+
+  GraphQLSchema:
+    Type: AWS::AppSync::GraphQLSchema
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      # path to graphql schema file
+      DefinitionS3Location: src/schema.graphql
+
+  AppSyncResolverGetPodcast:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      TypeName: Query
+      FieldName: getPodcast
+      DataSourceName: !GetAtt AppSyncDataSource.Name
+      RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke", "payload": { "field": "getPodcast", "arguments": $utils.toJson($context.arguments) } }'
+      ResponseMappingTemplate: $util.toJson($context.result)
+
+  AppSyncResolverGetSearchResults:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      TypeName: Query
+      FieldName: getSearchResults
+      DataSourceName: !GetAtt AppSyncDataSource.Name
+      RequestMappingTemplate: '{ "version" : "2017-02-28", "operation": "Invoke", "payload": { "field": "getSearchResults", "arguments": $utils.toJson($context.arguments) } }'
+      ResponseMappingTemplate: $util.toJson($context.result)
+
+  LambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref ApiName
+      Handler: src/index.handler
+      Runtime: nodejs10.x
+      Role: !GetAtt LambdaExecutionRole.Arn
+
+  AppSyncDataSource:
+    Type: AWS::AppSync::DataSource
+    Properties:
+      ApiId: !GetAtt GraphQLApi.ApiId
+      Name: handler
+      Type: AWS_LAMBDA
+      LambdaConfig:
+        LambdaFunctionArn: !GetAtt LambdaFunction.Arn
+      ServiceRoleArn: !GetAtt AppSyncServiceRole.Arn
+
+  ############################
+  # AWS IAM Roles & Policies #
+  ############################
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: LambdaExecutionRoleLogAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:*
+                Resource: arn:aws:logs:*:*:*
+  AppSyncServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - appsync.amazonaws.com
+            Action:
+              - sts:AssumeRole
+  AppSyncLambdaInvokePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AppSyncLambdaInvokePolicy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:*
+            Resource: "*"
+      Roles:
+        - !Ref AppSyncServiceRole
 Outputs:
-  FetchGithubDataApi:
-    Description: "API Gateway endpoint URL for Prod stage for FetchGithubDataFunction function"
-    Value: !Sub "https://${FetchGithubDataApiGateway}.execute-api.${AWS::Region}.amazonaws.com/Prod/github/"
+  GraphQLApiEndpoint:
+    Description: GraphQL API URL
+    Value: !GetAtt GraphQLApi.GraphQLUrl
+  ApiKey:
+    Description: API Key
+    Value: !GetAtt ApiKey.ApiKey

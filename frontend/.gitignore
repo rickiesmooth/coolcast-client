@@ -68,3 +68,11 @@ lib/ocaml
 # Expo
 .expo
 __generated__
+
+.gen.js
+
+.cache
+public/
+
+# dotenv environment variables file
+.env.*
